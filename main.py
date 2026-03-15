@@ -2,8 +2,10 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
+from app.domains.analysis.adapter.inbound.api.analysis_router import router as analysis_router
 from app.domains.news.adapter.inbound.api.news_router import router as news_router
 from app.domains.post.adapter.inbound.api.post_router import router as post_router
+from app.domains.news.infrastructure.orm.saved_news_orm import SavedNewsORM  # noqa: F401
 from app.domains.post.infrastructure.orm.post_orm import Base
 from app.infrastructure.config import get_settings
 from app.infrastructure.database.database import engine
@@ -22,6 +24,7 @@ app = FastAPI(lifespan=lifespan)
 
 app.include_router(post_router)
 app.include_router(news_router)
+app.include_router(analysis_router)
 
 
 @app.get("/")

@@ -9,3 +9,25 @@ GET http://127.0.0.1:8000/hello/User
 Accept: application/json
 
 ###
+
+POST http://127.0.0.1:33333/analysis
+Content-Type: application/json
+
+{
+  "content": "삼성전자가 2분기 실적 발표에서 매출 77조원을 기록하며 시장 예상을 크게 웃돌았다. 반도체 부문의 회복세가 뚜렷하며, AI 관련 수요 증가로 인해 HBM 매출이 전년 대비 3배 이상 성장했다."
+}
+
+###
+
+POST http://127.0.0.1:33333/news/saved
+Content-Type: application/json
+
+{
+  "title": "삼성전자 2분기 실적 발표",
+  "link": "https://example.com/news/samsung-q2",
+  "source": "한국경제",
+  "published_at": "2026-03-15",
+  "snippet": "삼성전자가 2분기 매출 77조원을 기록하며 시장 예상을 웃돌았다."
+}
+
+###
