@@ -1,17 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, status
-from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.domains.analysis.adapter.outbound.external.web_scraper_adapter import WebScraperAdapter
-from app.domains.news.adapter.outbound.external.serp_news_adapter import SerpNewsAdapter
-from app.domains.news.adapter.outbound.persistence.saved_news_repository_impl import SavedNewsRepositoryImpl
 from app.domains.news.application.request.save_news_request import SaveNewsRequest
 from app.domains.news.application.request.search_news_request import SearchNewsRequest
 from app.domains.news.application.response.save_news_response import SaveNewsResponse
 from app.domains.news.application.response.search_news_response import SearchNewsResponse
 from app.domains.news.application.usecase.save_news_usecase import SaveNewsUseCase
 from app.domains.news.application.usecase.search_news_usecase import SearchNewsUseCase
-from app.infrastructure.config import get_settings
-from app.infrastructure.database.database import get_db_session
+from app.domains.news.di import get_save_news_usecase, get_search_news_usecase
 
 router = APIRouter(prefix="/news", tags=["news"])
 
@@ -21,11 +16,8 @@ async def search_news(
     keyword: str = Query(..., min_length=1),
     page: int = Query(1, ge=1),
     size: int = Query(10, ge=1, le=100),
+    usecase: SearchNewsUseCase = Depends(get_search_news_usecase),
 ):
-    settings = get_settings()
-    adapter = SerpNewsAdapter(api_key=settings.SERP_API_KEY)
-    usecase = SearchNewsUseCase(news_search_port=adapter)
-
     request = SearchNewsRequest(keyword=keyword, page=page, size=size)
     return await usecase.execute(request)
 
@@ -33,12 +25,8 @@ async def search_news(
 @router.post("/saved", response_model=SaveNewsResponse, status_code=status.HTTP_201_CREATED)
 async def save_news(
     request: SaveNewsRequest,
-    session: AsyncSession = Depends(get_db_session),
+    usecase: SaveNewsUseCase = Depends(get_save_news_usecase),
 ):
-    repository = SavedNewsRepositoryImpl(session)
-    scraper = WebScraperAdapter()
-    usecase = SaveNewsUseCase(saved_news_repository=repository, article_content_port=scraper)
-
     try:
         return await usecase.execute(request)
     except ValueError as e:

@@ -19,4 +19,5 @@ class SavedNewsORM(Base):
     source = Column(String(255), nullable=False, default="")
     published_at = Column(String(100), nullable=False, default="")
     snippet = Column(Text, nullable=True)
+    content = Column(Text, nullable=True)
     saved_at = Column(DateTime, nullable=False, server_default=func.now())
