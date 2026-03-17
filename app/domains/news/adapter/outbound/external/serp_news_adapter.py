@@ -11,6 +11,7 @@ class SerpNewsAdapter(NewsSearchPort):
         self.api_key = api_key
         self.base_url = "https://serpapi.com/search"
 
+    # 외부 API로 Google Serp API를 실제 사용하여 검색하는 부분입니다.
     async def search(self, keyword: str, page: int, size: int) -> Tuple[List[NewsItem], int]:
         start = (page - 1) * size
 
@@ -22,6 +23,8 @@ class SerpNewsAdapter(NewsSearchPort):
             "num": size,
         }
 
+        # 실제 여기서 검색 요청이 발생하고
+        # 응답 받은 결과는 `data` 에 저장됨
         async with httpx.AsyncClient() as client:
             response = await client.get(self.base_url, params=params, timeout=10.0)
             response.raise_for_status()
@@ -41,4 +44,5 @@ class SerpNewsAdapter(NewsSearchPort):
             for result in news_results
         ]
 
+        # 검색으로 조회된 뉴스 다발과 전체 개수
         return items, total_count
