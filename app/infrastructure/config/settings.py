@@ -12,6 +12,13 @@ class Settings(BaseSettings):
     JWT_SECRET_KEY: str
     SERP_API_KEY: str
     OPENAI_API_KEY: str
+    REDIS_HOST: str = "localhost"
+    REDIS_PORT: int = 6379
+    REDIS_PASSWORD: str = ""
+    SESSION_TTL_SECONDS: int = 3600
+    AUTH_PASSWORD: str
+    KAKAO_CLIENT_ID: str
+    KAKAO_REDIRECT_URI: str
 
     model_config = {
         "env_file": ".env",
