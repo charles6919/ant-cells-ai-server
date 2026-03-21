@@ -13,3 +13,4 @@ class KakaoUserInfoResponse(BaseModel):
     account_id: Optional[str] = None
     token_type: Optional[TokenType] = None
     temp_token: Optional[str] = None
+    user_token: Optional[str] = None
