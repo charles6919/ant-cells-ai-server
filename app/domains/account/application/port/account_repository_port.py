@@ -9,3 +9,7 @@ class AccountRepositoryPort(ABC):
     @abstractmethod
     async def find_by_email(self, email: str) -> Optional[Account]:
         pass
+
+    @abstractmethod
+    async def save(self, account: Account) -> None:
+        pass

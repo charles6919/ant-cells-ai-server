@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     AUTH_PASSWORD: str
     KAKAO_CLIENT_ID: str
     KAKAO_REDIRECT_URI: str
+    CORS_ALLOWED_FRONTEND_URL: str = "http://localhost:3000"
 
     model_config = {
         "env_file": ".env",

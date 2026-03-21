@@ -22,3 +22,8 @@ class AccountPersistenceAdapter(AccountRepositoryPort):
         if orm is None:
             return None
         return AccountMapper.to_entity(orm)
+
+    async def save(self, account: Account) -> None:
+        orm = AccountMapper.to_orm(account)
+        self._session.add(orm)
+        await self._session.commit()
