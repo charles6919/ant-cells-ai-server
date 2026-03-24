@@ -1,3 +1,5 @@
+from urllib.parse import quote
+
 from fastapi import APIRouter, Depends, Query
 from fastapi.responses import RedirectResponse
 
@@ -47,14 +49,14 @@ async def request_access_token_after_redirection(
         )
         redirect_response.set_cookie(
             key="nickname",
-            value=result.nickname or "",
+            value=quote(result.nickname or "", safe=""),
             httponly=True,
             max_age=SESSION_TTL_SECONDS,
             samesite="lax",
         )
         redirect_response.set_cookie(
             key="email",
-            value=result.email or "",
+            value=quote(result.email or "", safe=""),
             httponly=True,
             max_age=SESSION_TTL_SECONDS,
             samesite="lax",

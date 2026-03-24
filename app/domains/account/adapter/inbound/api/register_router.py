@@ -1,3 +1,5 @@
+from urllib.parse import quote
+
 from fastapi import APIRouter, Cookie, Depends
 from fastapi.responses import RedirectResponse
 
@@ -35,7 +37,7 @@ async def register_account(
     )
     redirect_response.set_cookie(
         key="nickname",
-        value=account.nickname or "",
+        value=quote(account.nickname or "", safe=""),
         httponly=True,
         max_age=USER_TOKEN_TTL_SECONDS,
         samesite="lax",

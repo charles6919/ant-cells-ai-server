@@ -14,6 +14,15 @@ class AccountPersistenceAdapter(AccountRepositoryPort):
     def __init__(self, session: AsyncSession):
         self._session = session
 
+    async def find_by_id(self, account_id: str) -> Optional[Account]:
+        result = await self._session.execute(
+            select(AccountORM).where(AccountORM.id == account_id)
+        )
+        orm = result.scalar_one_or_none()
+        if orm is None:
+            return None
+        return AccountMapper.to_entity(orm)
+
     async def find_by_email(self, email: str) -> Optional[Account]:
         result = await self._session.execute(
             select(AccountORM).where(AccountORM.email == email)
