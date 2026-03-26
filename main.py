@@ -10,8 +10,10 @@ from app.domains.news.adapter.inbound.api.news_router import router as news_rout
 from app.domains.post.adapter.inbound.api.post_router import router as post_router
 from app.domains.kakao_authentication.adapter.inbound.api.kakao_authentication_router import router as kakao_authentication_router
 from app.domains.session.adapter.inbound.api.session_router import router as session_router
+from app.domains.board.adapter.inbound.api.board_router import router as board_router
 from app.domains.account.infrastructure.orm.account_orm import AccountORM  # noqa: F401
 from app.domains.news.infrastructure.orm.saved_news_orm import SavedNewsORM  # noqa: F401
+from app.domains.board.infrastructure.orm.board_orm import BoardORM  # noqa: F401
 from app.domains.post.infrastructure.orm.post_orm import Base
 from app.infrastructure.config import get_settings
 from app.infrastructure.database.database import engine
@@ -43,6 +45,7 @@ app.include_router(news_router)
 app.include_router(analysis_router)
 app.include_router(session_router)
 app.include_router(kakao_authentication_router)
+app.include_router(board_router)
 
 
 @app.get("/")
