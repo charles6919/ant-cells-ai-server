@@ -8,7 +8,7 @@ from app.infrastructure.external.llm_client_port import LLMClientPort
 logger = logging.getLogger(__name__)
 
 _RESPONSES_URL = "https://api.openai.com/v1/responses"
-_MODEL = "gpt-4o-mini"
+_MODEL = "gpt-5-mini"
 
 
 class OpenAILLMClient(LLMClientPort):
