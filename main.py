@@ -13,6 +13,7 @@ from app.domains.session.adapter.inbound.api.session_router import router as ses
 from app.domains.board.adapter.inbound.api.board_router import router as board_router
 from app.domains.market_video.adapter.inbound.api.market_video_router import router as market_video_router
 from app.domains.stock_theme.adapter.inbound.api.stock_theme_router import router as stock_theme_router
+from app.domains.market_analysis.adapter.inbound.api.market_analysis_router import router as market_analysis_router
 from app.domains.account.infrastructure.orm.account_orm import AccountORM  # noqa: F401
 from app.domains.news.infrastructure.orm.saved_news_orm import SavedNewsORM  # noqa: F401
 from app.domains.board.infrastructure.orm.board_orm import BoardORM  # noqa: F401
@@ -58,6 +59,7 @@ app.include_router(kakao_authentication_router)
 app.include_router(board_router)
 app.include_router(market_video_router)
 app.include_router(stock_theme_router)
+app.include_router(market_analysis_router)
 
 
 @app.get("/")
