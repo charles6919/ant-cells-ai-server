@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import func, select
+from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domains.market_video.application.port.video_repository_port import VideoRepositoryPort
@@ -56,3 +56,26 @@ class VideoPersistenceAdapter(VideoRepositoryPort):
         )
         orm = result.scalar_one_or_none()
         return SavedVideoMapper.to_entity(orm) if orm else None
+
+    async def find_all_by_title_keywords(
+        self, keywords: list[str], page: int, size: int,
+    ) -> tuple[list[SavedVideo], int]:
+        keyword_filter = or_(
+            SavedVideoORM.title.contains(kw) for kw in keywords
+        )
+
+        count_result = await self._session.execute(
+            select(func.count(SavedVideoORM.video_id)).where(keyword_filter)
+        )
+        total = count_result.scalar_one()
+
+        result = await self._session.execute(
+            select(SavedVideoORM)
+            .where(keyword_filter)
+            .order_by(SavedVideoORM.published_at.desc())
+            .offset((page - 1) * size)
+            .limit(size)
+        )
+        orms = result.scalars().all()
+
+        return [SavedVideoMapper.to_entity(orm) for orm in orms], total

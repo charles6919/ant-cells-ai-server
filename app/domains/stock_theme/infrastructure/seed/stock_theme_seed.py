@@ -36,7 +36,15 @@ async def seed_stock_themes(session: AsyncSession) -> None:
     if count and count > 0:
         return
 
+    import json
+    from datetime import datetime
+
     for item in SEED_DATA:
-        session.add(StockThemeORM(name=item["name"], code=item["code"], themes=item["themes"]))
+        session.add(StockThemeORM(
+            name=item["name"],
+            code=item["code"],
+            themes=json.dumps(item["themes"], ensure_ascii=False),
+            created_at=datetime.now(),
+        ))
 
     await session.commit()

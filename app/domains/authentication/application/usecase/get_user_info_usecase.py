@@ -26,7 +26,9 @@ class GetUserInfoUseCase:
         user_token: Optional[str] = None,
     ) -> AuthenticationMeResponse:
         if user_token:
-            return await self._handle_user_token(user_token)
+            result = await self._try_handle_user_token(user_token)
+            if result is not None:
+                return result
 
         if temp_token:
             return await self._handle_temp_token(temp_token)
@@ -36,20 +38,14 @@ class GetUserInfoUseCase:
             detail="No authentication token provided",
         )
 
-    async def _handle_user_token(self, user_token: str) -> AuthenticationMeResponse:
+    async def _try_handle_user_token(self, user_token: str) -> Optional[AuthenticationMeResponse]:
         account_id = await self.user_session_lookup.get_account_id(user_token)
         if account_id is None:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="User token is expired or invalid",
-            )
+            return None
 
         account = await self.account_repository.find_by_id(account_id)
         if account is None:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Account not found",
-            )
+            return None
 
         print(f"[Authentication Me] user_token_prefix={user_token[:8]}..., nickname={account.nickname}, email={account.email}")
 

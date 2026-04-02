@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domains.market_video.adapter.outbound.cache.user_token_read_redis_adapter import UserTokenReadRedisAdapter
 from app.domains.market_video.adapter.outbound.external.kiwi_noun_extractor_adapter import KiwiNounExtractorAdapter
+from app.domains.market_video.adapter.outbound.persistence.user_interest_theme_read_adapter import UserInterestThemeReadAdapter
 from app.domains.market_video.adapter.outbound.external.youtube_channel_adapter import YouTubeChannelAdapter
 from app.domains.market_video.adapter.outbound.external.youtube_comment_adapter import YouTubeCommentAdapter
 from app.domains.market_video.adapter.outbound.external.youtube_search_adapter import YouTubeSearchAdapter
@@ -25,6 +26,7 @@ def get_video_list_usecase(
     return GetVideoListUseCase(
         video_repository=VideoPersistenceAdapter(session=session),
         user_token_read=UserTokenReadRedisAdapter(redis_client=redis),
+        user_interest_theme_read=UserInterestThemeReadAdapter(session=session),
     )
 
 

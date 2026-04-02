@@ -17,3 +17,7 @@ class AccountRepositoryPort(ABC):
     @abstractmethod
     async def save(self, account: Account) -> None:
         pass
+
+    @abstractmethod
+    async def delete_by_id(self, account_id: str) -> None:
+        pass

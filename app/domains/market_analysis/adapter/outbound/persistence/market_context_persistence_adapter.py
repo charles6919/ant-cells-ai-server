@@ -1,3 +1,5 @@
+import json
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -12,6 +14,17 @@ class MarketContextPersistenceAdapter(MarketContextRepositoryPort):
     async def get_all_stocks(self) -> list[dict]:
         result = await self.session.execute(select(StockThemeORM))
         return [
-            {"name": row.name, "code": row.code, "themes": row.themes}
+            {"name": row.name, "code": row.code, "themes": self._parse_themes(row.themes)}
             for row in result.scalars().all()
         ]
+
+    @staticmethod
+    def _parse_themes(themes) -> list:
+        if isinstance(themes, list):
+            return themes
+        if isinstance(themes, str) and themes.strip():
+            try:
+                return json.loads(themes)
+            except json.JSONDecodeError:
+                return []
+        return []

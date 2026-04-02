@@ -1,6 +1,6 @@
 from typing import Optional
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domains.account.application.port.account_repository_port import AccountRepositoryPort
@@ -35,4 +35,10 @@ class AccountPersistenceAdapter(AccountRepositoryPort):
     async def save(self, account: Account) -> None:
         orm = AccountMapper.to_orm(account)
         self._session.add(orm)
+        await self._session.commit()
+
+    async def delete_by_id(self, account_id: str) -> None:
+        await self._session.execute(
+            delete(AccountORM).where(AccountORM.id == account_id)
+        )
         await self._session.commit()

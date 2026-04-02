@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, JSON, String
+from sqlalchemy import Column, DateTime, String
 
 from app.domains.post.infrastructure.orm.post_orm import Base
 
@@ -6,7 +6,7 @@ from app.domains.post.infrastructure.orm.post_orm import Base
 class StockThemeORM(Base):
     __tablename__ = "stock_themes"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(255), nullable=False, unique=True)
-    code = Column(String(20), nullable=False, unique=True)
-    themes = Column(JSON, nullable=False)
+    code = Column(String(10), primary_key=True)
+    name = Column(String(100), nullable=False)
+    themes = Column(String(500), nullable=False)
+    created_at = Column(DateTime, nullable=False)

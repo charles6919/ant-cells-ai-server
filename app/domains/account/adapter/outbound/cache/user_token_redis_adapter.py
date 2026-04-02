@@ -18,3 +18,11 @@ class UserTokenRedisAdapter(UserTokenPort):
     async def save_kakao_access_token(self, account_id: str, kakao_access_token: str, ttl_seconds: int) -> None:
         key = f"{KAKAO_TOKEN_PREFIX}{account_id}"
         await self._redis.set(key, kakao_access_token, ex=ttl_seconds)
+
+    async def delete_user_token(self, user_token: str) -> None:
+        key = f"{USER_TOKEN_PREFIX}{user_token}"
+        await self._redis.delete(key)
+
+    async def delete_kakao_access_token(self, account_id: str) -> None:
+        key = f"{KAKAO_TOKEN_PREFIX}{account_id}"
+        await self._redis.delete(key)

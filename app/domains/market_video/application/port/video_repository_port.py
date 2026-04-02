@@ -19,3 +19,10 @@ class VideoRepositoryPort(ABC):
         """video_id로 저장된 영상을 조회한다. 없으면 None을 반환한다."""
         pass
 
+    @abstractmethod
+    async def find_all_by_title_keywords(
+        self, keywords: list[str], page: int, size: int,
+    ) -> tuple[list[SavedVideo], int]:
+        """제목에 키워드가 포함된 영상을 게시일 내림차순으로 반환한다."""
+        pass
+

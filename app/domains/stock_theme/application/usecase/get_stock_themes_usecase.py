@@ -33,7 +33,7 @@ class GetStockThemesUseCase:
         return StockThemeListResponse(
             total=len(stocks),
             stocks=[
-                StockThemeItemResponse(id=s.id, name=s.name, code=s.code, themes=s.themes)
+                StockThemeItemResponse(name=s.name, code=s.code, themes=s.themes)
                 for s in stocks
             ],
         )

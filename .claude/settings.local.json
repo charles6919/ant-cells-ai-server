@@ -15,7 +15,8 @@
       "Read(//mnt/d/ai/**)",
       "Bash(python -c \":*)",
       "Bash(cd \"D:/ai/ant-cells-ai-server\" && python -c \"\nimport asyncio, httpx, os\nfrom dotenv import load_dotenv\nimport aiomysql\n\nload_dotenv\\(\\)\n\nasync def main\\(\\):\n    conn = await aiomysql.connect\\(\n        host=os.getenv\\('MYSQL_HOST'\\),\n        port=int\\(os.getenv\\('MYSQL_PORT', 3306\\)\\),\n        user=os.getenv\\('MYSQL_USER'\\),\n        password=os.getenv\\('MYSQL_PASSWORD'\\),\n        db=os.getenv\\('MYSQL_DATABASE'\\),\n    \\)\n    async with conn.cursor\\(\\) as cur:\n        await cur.execute\\('SELECT video_id FROM saved_videos'\\)\n        rows = await cur.fetchall\\(\\)\n    conn.close\\(\\)\n    video_ids = [r[0] for r in rows]\n    print\\(f'총 {len\\(video_ids\\)}개 영상'\\)\n\n    async with httpx.AsyncClient\\(timeout=60\\) as client:\n        for vid in video_ids:\n            try:\n                r = await client.post\\(f'http://localhost:33333/youtube/comments/save?video_id={vid}&max_count=200'\\)\n                data = r.json\\(\\)\n                print\\(f'{vid}: saved={data.get\\(\\\\\"saved_count\\\\\", \\\\\"?\\\\\"\\)}'\\)\n            except Exception as e:\n                print\\(f'{vid}: ERROR {e}'\\)\n\nasyncio.run\\(main\\(\\)\\)\n\")",
-      "Bash(cd \"D:/ai/ant-cells-ai-server\" && curl -s \"http://localhost:33333/youtube/nouns?top_n=5\" | python -m json.tool 2>&1 | head -40)"
+      "Bash(cd \"D:/ai/ant-cells-ai-server\" && curl -s \"http://localhost:33333/youtube/nouns?top_n=5\" | python -m json.tool 2>&1 | head -40)",
+      "Bash(find /Users/a82108/Documents/GitHub/Multi-Agent/ant-cells-ai-server_team -type f -name *interest*theme* -o -name *user_interest*)"
     ]
   }
 }
